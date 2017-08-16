@@ -31,12 +31,12 @@ public final class ToDatabase extends RouteBuilder {
     @Override
     public void configure() throws Exception {
 
-        from("file://inbox/public_transportation?delete=true&idempotent=true&readLock=changed&readLockCheckInterval=1500")
+        from("file://inbox/public_transportation?move=//outbox/public_transportation&idempotent=true&readLock=changed&readLockCheckInterval=1500")
                 .routeId("PublicTransportationToMongoDB")
                 .unmarshal(new BindyCsvDataFormat(PublicTransportation.class))
                 .to(this.mongoDbRoutePublicTransportation);
 
-        from("file://inbox/roads?delete=true&idempotent=true&readLock=changed&readLockCheckInterval=1500")
+        from("file://inbox/roads?move=//outbox/roads&idempotent=true&readLock=changed&readLockCheckInterval=1500")
                 .routeId("RoadsToMongoDB")
                 .unmarshal(new BindyCsvDataFormat(Road.class))
                 .to(this.mongoDbRoutePublicRoads);

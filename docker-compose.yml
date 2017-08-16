@@ -6,9 +6,9 @@ services:
     container_name: "uol_wk7_camel_app"
     volumes:
       - "./inbox:/opt/camel-app/inbox:rw"
-    networks:
-      cluster:
-        ipv4_address: "172.66.7.7"
+      - "./outbox:/opt/camel-app/outbox:rw"
+    links:
+      - "uol_wk7_mongodb"
 
   uol_wk7_mongodb:
     image: mongo:latest
@@ -21,12 +21,3 @@ services:
     ports:
       - "27017:27017"
     command: "mongod --smallfiles"
-    networks:
-      cluster:
-        ipv4_address: "172.66.9.9"
-
-networks:
-  cluster:
-    ipam:
-      config:
-        - subnet: "172.66.0.0/16"
